@@ -239,10 +239,12 @@ h1.hero-title em{
   display:grid;grid-template-columns:repeat(4,1fr);gap:0;
   margin-top:3rem;position:relative;
 }
-.process-grid::before{
-  content:'';position:absolute;top:38px;left:12%;right:12%;height:2px;
-  background:linear-gradient(90deg,var(--sun),var(--sun-deep));
-  opacity:.3;border-radius:1px;z-index:0;
+.process-grid::before {
+  content: ''; position: absolute; 
+  top: 62px; /* <-- Valor corrigido para centralizar no círculo */
+  left: 12%; right: 12%; height: 2px;
+  background: var(--border);
+  border-radius: 1px; z-index: 0;
 }
 .process-step{
   text-align:center;padding:1.5rem 1.2rem;position:relative;z-index:1;
@@ -682,3 +684,48 @@ footer{
   .hero-btns{flex-direction:column;align-items:center;}
   .btn-sun,.btn-green{width:100%;justify-content:center;}
 }
+
+/* ══════════════════════════════════════
+   PROCESS
+══════════════════════════════════════ */
+#processo{background:var(--sun-xlight);transition:background .35s;}
+.process-grid{
+  display:grid;grid-template-columns:repeat(4,1fr);gap:0;
+  margin-top:3rem;position:relative;
+}
+
+/* Esse comando força qualquer linha antiga fantasma a sumir completamente */
+.process-grid::before,
+.process-grid::after {
+  display: none !important;
+}
+
+.process-step{
+  text-align:center;padding:1.5rem 1.2rem;position:relative;z-index:1;
+}
+
+/* Efeito de "Pulo elástico" (Bounce) suave (0.9s) */
+.process-step.reveal {
+  transform: translateY(30px) scale(0.8);
+  transition: opacity 0.9s ease, transform 0.9s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+.process-step.reveal.visible {
+  transform: translateY(0) scale(1);
+}
+
+.step-num{
+  width:76px;height:76px;border-radius:50%;margin:0 auto 1.2rem;
+  background:linear-gradient(135deg,var(--sun),var(--sun-deep));
+  color:#fff;font-family:'Bebas Neue',cursive;font-size:1.6rem;
+  display:flex;align-items:center;justify-content:center;
+  box-shadow:0 4px 16px rgba(245,158,11,.35);
+  transition:transform .3s, box-shadow .3s;
+}
+
+.process-step:hover .step-num{
+  transform:scale(1.15); 
+  box-shadow:0 8px 24px rgba(245,158,11,.5);
+}
+.step-icon-inner{font-size:1.8rem;}
+.process-step h3{font-family:'Barlow Condensed',sans-serif;font-size:1.1rem;font-weight:700;margin-bottom:.4rem;color:var(--text);transition:color .35s;}
+.process-step p{font-size:.85rem;color:var(--muted);line-height:1.6;transition:color .35s;}

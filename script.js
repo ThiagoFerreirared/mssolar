@@ -119,3 +119,77 @@ function calcular(){
     <div class="r-disc">* Estimativa baseada na tarifa CELPA e irradiação de Santarém-PA.<br/>Valores finais após visita técnica gratuita.</div>
   `;
 }
+
+/* ══════════════════════════════════════
+   EFEITO PARALLAX DE MOUSE (HERO)
+══════════════════════════════════════ */
+document.addEventListener('mousemove', (e) => {
+  const glow = document.querySelector('.hero-glow');
+  const dots = document.querySelector('.hero-dots');
+  
+  if (glow && dots) {
+    const x = (window.innerWidth / 2 - e.pageX) / 40;
+    const y = (window.innerHeight / 2 - e.pageY) / 40;
+    glow.style.transform = `translate(calc(-50% + ${x}px), ${y}px)`;
+    dots.style.transform = `translate(${x * 0.5}px, ${y * 0.5}px)`;
+  }
+});
+
+/* ══════════════════════════════════════
+   EFEITO 3D TILT NOS CARTÕES DO SITE
+══════════════════════════════════════ */
+// Seleciona todos os elementos que vão ter o efeito 3D
+const cards = document.querySelectorAll('.svc-card, .gal-item, .benefit, .testi-card, .ci-item, .r-card');
+
+cards.forEach(card => {
+  card.addEventListener('mousemove', (e) => {
+    const rect = card.getBoundingClientRect();
+    const x = e.clientX - rect.left;
+    const y = e.clientY - rect.top;
+    
+    // Calcula a inclinação com base na posição do mouse (máximo de 6 a 8 graus)
+    const centerX = rect.width / 2;
+    const centerY = rect.height / 2;
+    const rotateX = ((y - centerY) / centerY) * -6; 
+    const rotateY = ((x - centerX) / centerX) * 6;
+    
+    card.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale3d(1.02, 1.02, 1.02)`;
+    card.style.transition = 'none'; // Tira a transição para seguir o mouse rápido
+    card.style.zIndex = '10'; // Joga o cartão pra frente
+  });
+  
+  card.addEventListener('mouseleave', () => {
+    card.style.transform = `perspective(1000px) rotateX(0deg) rotateY(0deg) scale3d(1, 1, 1)`;
+    card.style.transition = 'transform 0.5s ease'; // Volta suavemente pro lugar
+    card.style.zIndex = '1';
+  });
+});
+
+/* ══════════════════════════════════════
+   PARALLAX DE SCROLL GLOBAL
+══════════════════════════════════════ */
+window.addEventListener('scroll', () => {
+  const scrollY = window.scrollY;
+  
+  // 1. Parallax de desaparecer no Hero (Topo)
+  const heroInner = document.querySelector('.hero-inner');
+  if (heroInner && scrollY < window.innerHeight) {
+    heroInner.style.transform = `translateY(${scrollY * 0.35}px)`;
+    heroInner.style.opacity = 1 - (scrollY / 500);
+  }
+  
+  // 2. Parallax de profundidade nos Elementos (Títulos, Tags e Sol animado)
+  // Utiliza requestAnimationFrame internamente via evento de scroll para não travar
+  const parallaxElements = document.querySelectorAll('.sec-tag, .sun-anim');
+  
+  parallaxElements.forEach(el => {
+    const rect = el.getBoundingClientRect();
+    // Só aplica o cálculo se o elemento estiver visível na tela
+    if(rect.top < window.innerHeight && rect.bottom > 0) {
+      // O sol se move mais rápido que os títulos para dar mais destaque
+      const speed = el.classList.contains('sun-anim') ? 0.15 : 0.05;
+      const yPos = (rect.top - window.innerHeight / 2) * speed;
+      el.style.transform = `translateY(${yPos}px)`;
+    }
+  });
+});
