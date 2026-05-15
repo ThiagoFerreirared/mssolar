@@ -59,39 +59,45 @@ img{display:block;max-width:100%;}
 /* ══════════════════════════════════════
    NAV
 ══════════════════════════════════════ */
-nav{
-  position:sticky;top:0;z-index:100;
-  display:flex;align-items:center;
-  justify-content:space-between; /* Distribui o espaço entre a esquerda, centro e direita */
-  padding:0 3rem;height:80px; 
-  background:var(--nav-bg);
-  backdrop-filter:blur(16px);
-  border-bottom:1px solid var(--border);
-  transition:background .35s,border-color .35s;
+nav {
+  position: sticky; top: 0; z-index: 100;
+  display: flex;
+  align-items: center;
+  justify-content: center; /* FORÇA TUDO PARA O MEIO DA TELA */
+  gap: 3rem; /* Espaço entre a Logo, o Menu e os Botões da direita */
+  padding: 0 2rem; height: 80px; 
+  background: var(--nav-bg);
+  backdrop-filter: blur(16px);
+  border-bottom: 1px solid var(--border);
+  transition: background .35s, border-color .35s;
 }
 
-/* O flex: 1 faz com que o logo e os botões ocupem o mesmo espaço nas pontas, centrando o menu */
-.logo{display:flex;align-items:center;flex:1;} 
-.logo-icon{font-size:1.5rem;}
-.logo-img{
+.logo {
+  display: flex; align-items: center;
+  flex: none; /* Garante que a logo não tente ocupar mais espaço do que deve */
+} 
+.logo-icon { font-size: 1.5rem; }
+.logo-img {
   height: 65px; 
   width: auto;
   display: block;
   object-fit: contain;
   transition: opacity .2s;
 }
-.logo:hover .logo-img{opacity:.85;}
+.logo:hover .logo-img { opacity: .85; }
 
-nav ul{list-style:none;display:flex;gap:1.5rem;align-items:center;justify-content:center;}
-nav ul a{
-  color:var(--muted);font-weight:500;font-size:.85rem;
-  letter-spacing:.3px;text-transform:uppercase;transition:color .2s;
+nav ul {
+  list-style: none; display: flex; gap: 1.5rem; align-items: center;
 }
-nav ul a:hover{color:var(--sun);}
+nav ul a {
+  color: var(--muted); font-weight: 500; font-size: .85rem;
+  letter-spacing: .3px; text-transform: uppercase; transition: color .2s;
+}
+nav ul a:hover { color: var(--sun); }
 
-.nav-actions{
-  display:flex;align-items:center;justify-content:flex-end;gap:.8rem;
-  flex:1; /* flex: 1 na direita para contrabalançar o logótipo na esquerda */
+.nav-actions {
+  display: flex; align-items: center; gap: .8rem;
+  margin-left: 0; /* Remove a margem invisível que empurrava os botões lá pro canto */
 }
 
 .theme-btn{
