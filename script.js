@@ -31,37 +31,6 @@ function toggleMenu(){
 }
 
 /* ══════════════════════════
-   SCROLL REVEAL
-══════════════════════════ */
-const revealObs = new IntersectionObserver((entries) => {
-  entries.forEach(e => { if(e.isIntersecting) { e.target.classList.add('visible'); revealObs.unobserve(e.target); } });
-}, {threshold:.12});
-document.querySelectorAll('.reveal,.reveal-left,.reveal-right').forEach(el => revealObs.observe(el));
-
-/* ══════════════════════════
-   COUNTER ANIMATION
-══════════════════════════ */
-const counterObs = new IntersectionObserver((entries) => {
-  entries.forEach(e => {
-    if(e.isIntersecting){
-      const el = e.target;
-      const target = parseInt(el.dataset.target);
-      const suffix = el.dataset.suffix || '';
-      let start = 0;
-      const duration = 1800;
-      const step = Math.ceil(target / (duration / 16));
-      const timer = setInterval(() => {
-        start = Math.min(start + step, target);
-        el.textContent = start + suffix;
-        if(start >= target) clearInterval(timer);
-      }, 16);
-      counterObs.unobserve(el);
-    }
-  });
-},{threshold:.5});
-document.querySelectorAll('.stat-num[data-target]').forEach(el => counterObs.observe(el));
-
-/* ══════════════════════════
    FAQ ACCORDION
 ══════════════════════════ */
 function toggleFaq(el){
@@ -95,7 +64,7 @@ function calcular(){
   const paineis = Math.ceil((potencia * 1000) / 550);
   const cMin    = Math.round(custo * 0.85 / 100) * 100;
   const cMax    = Math.round(custo * 1.15 / 100) * 100;
-  const msg     = `Olá! Simulei no site da MS Solar e minha conta média é de R$ ${bill.toLocaleString('pt-BR')}. Gostaria de um orçamento! 🌞`;
+  const msg     = `Olá! Simulei no site da MS Solar e a minha conta média é de R$ ${bill.toLocaleString('pt-BR')}. Gostaria de um orçamento! 🌞`;
 
   document.getElementById('resultado').innerHTML = `
     <div class="r-main">
@@ -114,7 +83,7 @@ function calcular(){
       <div class="is">~${paineis} painéis de 550W</div>
     </div>
     <a href="https://wa.me/5593981012535?text=${encodeURIComponent(msg)}" target="_blank" class="r-wpp">
-      💬 Quero esse orçamento no WhatsApp
+      💬 Quero este orçamento no WhatsApp
     </a>
     <div class="r-disc">* Estimativa baseada na tarifa CELPA e irradiação de Santarém-PA.<br/>Valores finais após visita técnica gratuita.</div>
   `;
@@ -138,8 +107,7 @@ document.addEventListener('mousemove', (e) => {
 /* ══════════════════════════════════════
    EFEITO 3D TILT NOS CARTÕES DO SITE
 ══════════════════════════════════════ */
-// Seleciona todos os elementos que vão ter o efeito 3D
-const cards = document.querySelectorAll('.svc-card, .gal-item, .benefit, .testi-card, .ci-item, .r-card');
+const cards = document.querySelectorAll('.svc-card, .gal-item, .benefit, .testi-card, .r-card');
 
 cards.forEach(card => {
   card.addEventListener('mousemove', (e) => {
@@ -147,49 +115,94 @@ cards.forEach(card => {
     const x = e.clientX - rect.left;
     const y = e.clientY - rect.top;
     
-    // Calcula a inclinação com base na posição do mouse (máximo de 6 a 8 graus)
     const centerX = rect.width / 2;
     const centerY = rect.height / 2;
     const rotateX = ((y - centerY) / centerY) * -6; 
     const rotateY = ((x - centerX) / centerX) * 6;
     
     card.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale3d(1.02, 1.02, 1.02)`;
-    card.style.transition = 'none'; // Tira a transição para seguir o mouse rápido
-    card.style.zIndex = '10'; // Joga o cartão pra frente
+    card.style.transition = 'none'; 
+    card.style.zIndex = '10'; 
   });
   
   card.addEventListener('mouseleave', () => {
     card.style.transform = `perspective(1000px) rotateX(0deg) rotateY(0deg) scale3d(1, 1, 1)`;
-    card.style.transition = 'transform 0.5s ease'; // Volta suavemente pro lugar
+    card.style.transition = 'transform 0.5s ease'; 
     card.style.zIndex = '1';
   });
 });
 
 /* ══════════════════════════════════════
-   PARALLAX DE SCROLL GLOBAL
+   ANIMAÇÕES PRO MAX COM GSAP
 ══════════════════════════════════════ */
-window.addEventListener('scroll', () => {
-  const scrollY = window.scrollY;
-  
-  // 1. Parallax de desaparecer no Hero (Topo)
-  const heroInner = document.querySelector('.hero-inner');
-  if (heroInner && scrollY < window.innerHeight) {
-    heroInner.style.transform = `translateY(${scrollY * 0.35}px)`;
-    heroInner.style.opacity = 1 - (scrollY / 500);
+// Registra o ScrollTrigger para criar animações baseadas na rolagem
+gsap.registerPlugin(ScrollTrigger);
+
+// 1. ANIMAÇÃO DE ENTRADA DO HERO
+const heroTl = gsap.timeline();
+heroTl.from(".badge", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out", delay: 0.2 })
+      .from(".hero-title", { y: 30, opacity: 0, duration: 0.8, ease: "power3.out" }, "-=0.3")
+      .from(".hero-sub", { y: 20, opacity: 0, duration: 0.8, ease: "power3.out" }, "-=0.4")
+      .from(".hero-btns", { y: 20, opacity: 0, duration: 0.8, ease: "power3.out" }, "-=0.5")
+      .from(".stats-bar", { y: 40, opacity: 0, duration: 0.8, ease: "power3.out" }, "-=0.4");
+
+// 2. PARALLAX DE FUNDO AVANÇADO (Luz amarela)
+gsap.to(".hero-glow", {
+  yPercent: 40,
+  ease: "none",
+  scrollTrigger: {
+    trigger: "#hero",
+    start: "top top",
+    end: "bottom top",
+    scrub: true
   }
+});
+
+// 3. ANIMAÇÃO DE REVELAÇÃO DOS TEXTOS E CARDS
+gsap.utils.toArray('.sec-tag, .sec-title, .sec-desc').forEach(el => {
+  gsap.from(el, {
+    scrollTrigger: { trigger: el, start: "top 85%" },
+    y: 30, opacity: 0, duration: 0.8, ease: "power3.out"
+  });
+});
+
+gsap.utils.toArray('.svc-card, .gal-item, .benefit, .testi-card').forEach(card => {
+  gsap.from(card, {
+    scrollTrigger: { trigger: card, start: "top 90%" },
+    y: 40, opacity: 0, duration: 0.6, ease: "power2.out"
+  });
+});
+
+// 4. A MAGIA DO PROCESSO (SEM LINHAS, SÓ O BOUNCE!)
+const processTimeline = gsap.timeline({
+  scrollTrigger: { trigger: ".process-grid", start: "top 75%" }
+});
+
+processTimeline.from(".process-step", {
+  y: 40, scale: 0.8, opacity: 0,
+  duration: 0.9, stagger: 0.35, 
+  ease: "back.out(1.5)"
+});
+
+// 5. ANIMADOR DE NÚMEROS (CONTADORES)
+gsap.utils.toArray('.stat-num[data-target]').forEach(el => {
+  const target = parseInt(el.getAttribute('data-target'));
+  const suffix = el.getAttribute('data-suffix') || '';
   
-  // 2. Parallax de profundidade nos Elementos (Títulos, Tags e Sol animado)
-  // Utiliza requestAnimationFrame internamente via evento de scroll para não travar
-  const parallaxElements = document.querySelectorAll('.sec-tag, .sun-anim');
-  
-  parallaxElements.forEach(el => {
-    const rect = el.getBoundingClientRect();
-    // Só aplica o cálculo se o elemento estiver visível na tela
-    if(rect.top < window.innerHeight && rect.bottom > 0) {
-      // O sol se move mais rápido que os títulos para dar mais destaque
-      const speed = el.classList.contains('sun-anim') ? 0.15 : 0.05;
-      const yPos = (rect.top - window.innerHeight / 2) * speed;
-      el.style.transform = `translateY(${yPos}px)`;
+  ScrollTrigger.create({
+    trigger: el,
+    start: "top 85%",
+    once: true,
+    onEnter: () => {
+      gsap.to(el, {
+        innerHTML: target,
+        duration: 2.5,
+        snap: { innerHTML: 1 }, 
+        ease: "power2.out",
+        onUpdate: function() {
+          el.innerHTML = Math.round(el.innerHTML) + suffix;
+        }
+      });
     }
   });
 });
