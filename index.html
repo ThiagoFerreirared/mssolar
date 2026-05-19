@@ -644,7 +644,7 @@ footer {
   font-size: 0.82rem; font-weight: 600; transition: all 0.2s;
 }
 .admin-exit-btn:hover { background: rgba(239,68,68,0.2); }
-.admin-content { max-width: 1300px; margin: 0 auto; padding: 2rem; }
+.admin-content { max-width: 1300px; margin: 0 auto; padding: 2rem; position: relative; z-index: 1; }
 .admin-section-title {
   font-family: 'Barlow Condensed', sans-serif;
   font-size: 1.4rem; font-weight: 800;
@@ -698,7 +698,7 @@ footer {
   border-radius: var(--radius-lg); padding: 2rem; margin-bottom: 2.5rem;
 }
 .admin-form-grid {
-  display: grid; grid-template-columns: 1fr 1fr 120px auto;
+  display: grid; grid-template-columns: 1fr 1fr 1fr 1fr auto;
   gap: 1rem; align-items: end;
 }
 .admin-input {
@@ -1548,20 +1548,33 @@ window.renderAdminTable = function() {
 
   document.getElementById('table-count-label').textContent = `Mostrando ${rows.length} registros`;
 
-  if (rows.length === 0) { tbody.innerHTML = `<tr><td colspan="6"><div class="empty-state"><div class="es-icon">📭</div><div>Nenhum registro encontrado.</div></div></td></tr>`; return; }
+  if (rows.length === 0) { 
+    tbody.innerHTML = `<tr><td colspan="6"><div class="empty-state"><div class="es-icon">📭</div><div>Nenhum registro encontrado.</div></div></td></tr>`; 
+    return; 
+  }
 
   tbody.innerHTML = rows.map(item => {
     const date = item.createdAt ? new Date(item.createdAt).toLocaleString('pt-BR', { day:'2-digit', month:'2-digit', year:'2-digit', hour:'2-digit', minute:'2-digit' }) : '—';
+    
+    // Traduz o status para português com um visual limpo
+    const statusLabel = item.status === 'paid' ? '✅ Pago' : item.status === 'reserved' ? '⏳ Reservado' : '🔵 Disponível';
+    
     return `
       <tr>
         <td><span class="td-num">${window.pad(item.num)}</span></td>
-        <td>${item.nome || '—'}</td>
+        <td><strong>${item.nome || '—'}</strong></td>
         <td style="font-size:0.82rem;color:var(--text2);">${item.wpp || '—'}</td>
-        <td><span class="status-badge ${item.status}"><span class="status-dot"></span>${item.status}</span></td>
+        <td>
+          <span class="status-badge ${item.status}">
+            <span class="status-dot"></span>
+            ${statusLabel}
+          </span>
+        </td>
         <td style="font-size:0.8rem;color:var(--text2);">${date}</td>
         <td>
-          ${item.status === 'reserved' ? `<button class="action-btn action-approve" onclick="approvePayment(${item.num})">✅</button>` : ''}
-          ${item.status !== 'available' ? `<button class="action-btn action-reset" onclick="resetNumber(${item.num})">↩</button>` : ''}
+          ${item.status === 'reserved' ? `<button class="action-btn action-approve" onclick="approvePayment(${item.num})" style="background:var(--green); color:#fff; border:none;">✅ Aprovar</button>` : ''}
+          ${item.status !== 'available' ? `<button class="action-btn action-wpp" onclick="contactWpp(${item.num})">💬 WhatsApp</button>` : ''}
+          ${item.status !== 'available' ? `<button class="action-btn action-reset" onclick="resetNumber(${item.num})">↩ Liberar</button>` : ''}
         </td>
       </tr>
     `;
