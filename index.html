@@ -882,7 +882,7 @@ td { padding: 0.9rem 1.25rem; font-size: 0.88rem; }
     <div class="nav-right">
       <div class="nav-countdown" id="nav-countdown">
         <span class="pulse"></span>
-        <span id="nav-days">--</span>d <span id="nav-hours">--</span>h <span id="nav-mins">--</span>m
+        <span id="nav-days">--</span>d <span id="nav-hours">--</span>h <span id="nav-mins">--</span>m <span id="nav-secs">--</span>s
       </div>
       <a href="https://wa.me/5593981012535?text=Olá!%20Quero%20participar%20do%20sorteio%20MS%20Solar!" target="_blank" class="nav-wpp">
         💬 WhatsApp
@@ -958,20 +958,6 @@ td { padding: 0.9rem 1.25rem; font-size: 0.88rem; }
       </div>
     </div>
   </section>
-
-  <!-- COUNTDOWN STRIP -->
-  <div class="countdown-strip">
-    <div class="countdown-label">⏳ Tempo restante para o sorteio (25/07/2025)</div>
-    <div class="countdown-units">
-      <div class="c-unit"><div class="c-num" id="cd-days">00</div><div class="c-lbl">Dias</div></div>
-      <div class="c-sep">:</div>
-      <div class="c-unit"><div class="c-num" id="cd-hours">00</div><div class="c-lbl">Horas</div></div>
-      <div class="c-sep">:</div>
-      <div class="c-unit"><div class="c-num" id="cd-mins">00</div><div class="c-lbl">Minutos</div></div>
-      <div class="c-sep">:</div>
-      <div class="c-unit"><div class="c-num" id="cd-secs">00</div><div class="c-lbl">Segundos</div></div>
-    </div>
-  </div>
 
   <!-- NUMBERS SECTION -->
   <section id="numeros">
@@ -1078,13 +1064,7 @@ td { padding: 0.9rem 1.25rem; font-size: 0.88rem; }
         ║    Então substitua por: <img src="qrcode-pix.png"/>     ║
         ╚══════════════════════════════════════════════════════════╝
         -->
-        <div class="qr-placeholder" id="pix-qr-placeholder">
-          <div class="qr-icon">📲</div>
-          <div style="font-size:0.72rem;color:#555;line-height:1.4;">
-            Substitua por QR Code PIX<br/>
-            <strong>Veja comentário no código</strong>
-          </div>
-        </div>
+<img id="pix-qr-placeholder" src="qrcode-pix.png" alt="QR Code PIX MS Solar" style="width: 180px; height: 180px; border-radius: 12px; border: 4px solid var(--gold); box-shadow: var(--shadow-gold); margin: 0 auto 1.25rem;">
 
         <div class="qr-val">R$ 30,00</div>
         <div class="qr-val-lbl">Valor por cota</div>
@@ -1352,7 +1332,7 @@ td { padding: 0.9rem 1.25rem; font-size: 0.88rem; }
 ═══════════════════════════════════════════════════════ */
 const TOTAL_NUMBERS = 600;
 const PRICE_PER_QUOTA = 30;
-const DRAW_DATE = new Date('2025-07-25T20:00:00-03:00'); // Horário de Brasília
+const DRAW_DATE = new Date('2026-07-25T20:00:00-03:00'); // Horário de Brasília
 
 /*
   ╔══════════════════════════════════════════════════════╗
@@ -1423,27 +1403,40 @@ function showToast(msg, type = 'info', duration = 3500) {
 /* ══════════════════════════════════════════════════════
    COUNTDOWN
 ═══════════════════════════════════════════════════════ */
+/* ══════════════════════════════════════════════════════
+   COUNTDOWN
+═══════════════════════════════════════════════════════ */
 function updateCountdown() {
   const now = new Date();
   const diff = DRAW_DATE - now;
+  
   if (diff <= 0) {
+    // Zera o cronômetro central
     ['cd-days','cd-hours','cd-mins','cd-secs'].forEach(id => document.getElementById(id).textContent = '00');
+    // Zera o cronômetro da barra superior
     document.getElementById('nav-days').textContent = '00';
     document.getElementById('nav-hours').textContent = '00';
     document.getElementById('nav-mins').textContent = '00';
+    document.getElementById('nav-secs').textContent = '00';
     return;
   }
+  
   const days  = Math.floor(diff / 86400000);
   const hours = Math.floor((diff % 86400000) / 3600000);
   const mins  = Math.floor((diff % 3600000) / 60000);
   const secs  = Math.floor((diff % 60000) / 1000);
+  
+  // Atualiza o cronômetro central
   document.getElementById('cd-days').textContent  = pad2(days);
   document.getElementById('cd-hours').textContent = pad2(hours);
   document.getElementById('cd-mins').textContent  = pad2(mins);
   document.getElementById('cd-secs').textContent  = pad2(secs);
+  
+  // Atualiza a barra de navegação no topo
   document.getElementById('nav-days').textContent  = pad2(days);
   document.getElementById('nav-hours').textContent = pad2(hours);
   document.getElementById('nav-mins').textContent  = pad2(mins);
+  document.getElementById('nav-secs').textContent  = pad2(secs);
 }
 setInterval(updateCountdown, 1000);
 updateCountdown();
