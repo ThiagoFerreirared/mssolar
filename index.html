@@ -254,35 +254,6 @@ nav {
 }
 
 /* ═══════════════════════════════════════════════════════
-   COUNTDOWN STRIP
-═══════════════════════════════════════════════════════ */
-.countdown-strip {
-  background: linear-gradient(90deg, var(--dark3), var(--dark4), var(--dark3));
-  border-top: 1px solid var(--border-gold);
-  border-bottom: 1px solid var(--border-gold);
-  padding: 1.5rem 2rem; text-align: center;
-}
-.countdown-label {
-  font-size: 0.75rem; font-weight: 700; letter-spacing: 2px;
-  text-transform: uppercase; color: var(--gold); margin-bottom: 0.75rem;
-}
-.countdown-units {
-  display: flex; justify-content: center; gap: 1rem; flex-wrap: wrap;
-}
-.c-unit {
-  text-align: center; min-width: 70px;
-  background: var(--dark); border: 1px solid var(--border-gold);
-  border-radius: var(--radius-sm); padding: 0.75rem 1rem;
-}
-.c-num {
-  font-family: 'Bebas Neue', sans-serif; font-size: 2.2rem;
-  color: var(--gold); line-height: 1;
-  text-shadow: 0 0 20px rgba(245,158,11,0.5);
-}
-.c-lbl { font-size: 0.65rem; letter-spacing: 1.5px; text-transform: uppercase; color: var(--text2); margin-top: 0.15rem; }
-.c-sep { font-family: 'Bebas Neue', sans-serif; font-size: 2.2rem; color: var(--gold); opacity: 0.5; align-self: center; padding-top: 0.5rem; animation: blink 1s step-end infinite; }
-
-/* ═══════════════════════════════════════════════════════
    NUMBERS SECTION
 ═══════════════════════════════════════════════════════ */
 #numeros { padding: 4rem 2rem; position: relative; z-index: 2; }
@@ -302,7 +273,7 @@ nav {
   margin-bottom: 0.5rem;
 }
 .sec-title em { color: var(--gold); font-style: normal; }
-.sec-desc { color: var(--text2); font-size: 0.95rem; max-width: 560px; margin: 0 auto; }
+.sec-desc { color: var(--text2); font-size: 0.95rem; max-width: 650px; margin: 0 auto; }
 
 /* Legend */
 .legend {
@@ -351,7 +322,7 @@ nav {
   cursor: pointer; letter-spacing: 0.3px;
   position: relative;
 }
-.num-btn:hover:not(.paid):not(.reserved) {
+.num-btn:hover:not(.paid):not(.reserved):not(.selected) {
   transform: scale(1.12);
   box-shadow: 0 0 15px rgba(245,158,11,0.5);
   z-index: 2;
@@ -374,6 +345,14 @@ nav {
   color: var(--green);
   cursor: default;
 }
+/* NOVA CLASSE PARA MÚLTIPLA ESCOLHA */
+.num-btn.selected {
+  background: var(--gold) !important; 
+  border-color: #fff !important; 
+  color: #0A0800 !important;
+  transform: scale(1.15); z-index: 10; 
+  box-shadow: 0 0 15px rgba(245,158,11,0.6);
+}
 .num-btn.hidden { display: none; }
 
 /* Progress bar */
@@ -381,6 +360,31 @@ nav {
 .progress-labels { display: flex; justify-content: space-between; font-size: 0.8rem; color: var(--text2); margin-bottom: 0.5rem; }
 .progress-bar-bg { background: var(--dark3); border-radius: 50px; height: 12px; overflow: hidden; border: 1px solid var(--border); }
 .progress-bar-fill { height: 100%; border-radius: 50px; background: linear-gradient(90deg, var(--blue-light), var(--gold)); transition: width 0.5s ease; }
+
+/* ═══════════════════════════════════════════════════════
+   CHECKOUT BAR (CARRINHO)
+═══════════════════════════════════════════════════════ */
+.checkout-bar {
+  position: fixed; bottom: -120px; left: 50%; transform: translateX(-50%);
+  background: rgba(18,27,46,0.95); backdrop-filter: blur(10px);
+  border: 1px solid var(--border-gold);
+  border-radius: var(--radius-lg); padding: 1rem 2rem;
+  display: flex; align-items: center; justify-content: space-between; gap: 2rem;
+  box-shadow: var(--shadow-lg), 0 0 30px rgba(245,158,11,0.25);
+  transition: bottom 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  z-index: 1000; width: 90%; max-width: 500px;
+}
+.checkout-bar.visible { bottom: 2rem; }
+.checkout-info { display: flex; flex-direction: column; }
+.checkout-count { font-size: 0.8rem; color: var(--text2); text-transform: uppercase; letter-spacing: 1px; font-weight: 700; margin-bottom: 0.2rem; }
+.checkout-count span { color: var(--text); }
+.checkout-total { font-family: 'Bebas Neue', sans-serif; font-size: 2.2rem; color: var(--gold); line-height: 1; }
+.checkout-btn {
+  background: linear-gradient(135deg, var(--gold-deep), var(--gold));
+  color: #0A0800; font-weight: 800; padding: 0.8rem 1.5rem; border-radius: 12px;
+  transition: transform 0.2s, box-shadow 0.2s; white-space: nowrap; font-size: 1rem;
+}
+.checkout-btn:hover { transform: scale(1.05); box-shadow: 0 8px 20px rgba(245,158,11,0.4); }
 
 /* ═══════════════════════════════════════════════════════
    MODAL — RESERVAR NÚMERO
@@ -408,9 +412,9 @@ nav {
 }
 .modal-close:hover { background: rgba(255,255,255,0.12); color: var(--text); }
 .modal-num {
-  font-family: 'Bebas Neue', sans-serif; font-size: 5rem; color: var(--gold);
-  line-height: 1; text-align: center; text-shadow: 0 0 40px rgba(245,158,11,0.6);
-  margin-bottom: 0.25rem;
+  font-family: 'Bebas Neue', sans-serif; font-size: 2.5rem; color: var(--gold);
+  line-height: 1.1; text-align: center; text-shadow: 0 0 20px rgba(245,158,11,0.5);
+  margin-bottom: 0.5rem; white-space: normal; word-wrap: break-word;
 }
 .modal-subtitle { text-align: center; color: var(--text2); font-size: 0.88rem; margin-bottom: 2rem; }
 .form-group { margin-bottom: 1.25rem; }
@@ -437,9 +441,21 @@ nav {
 ═══════════════════════════════════════════════════════ */
 #pagamento { padding: 4rem 2rem; position: relative; z-index: 2; }
 .pix-container {
-  max-width: 820px; margin: 0 auto;
-  display: grid; grid-template-columns: 1fr 1fr;
-  gap: 1.5rem; align-items: start;
+  max-width: 1000px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1.5rem;
+  align-items: stretch;
+}
+@media (max-width: 960px) {
+  .pix-container { grid-template-columns: 1fr 1fr; }
+}
+@media (max-width: 768px) {
+  .pix-container { grid-template-columns: 1fr; }
+  .checkout-bar { padding: 0.75rem 1.2rem; gap: 1rem; }
+  .checkout-total { font-size: 1.8rem; }
+  .checkout-btn { padding: 0.6rem 1rem; font-size: 0.9rem; }
 }
 .pix-info-card, .pix-qr-card {
   background: var(--dark3); border: 1px solid var(--border);
@@ -479,35 +495,10 @@ nav {
 
 /* QR Code Card */
 .pix-qr-card { text-align: center; display: flex; flex-direction: column; align-items: center; }
-/* ╔═══════════════════════════════════════════════════╗
-   ║  INTEGRAÇÃO QR CODE PIX — LEIA ANTES DE USAR    ║
-   ║                                                   ║
-   ║  Para gerar o QR Code dinâmico do PIX, use a    ║
-   ║  API do seu banco (Mercado Pago, PagSeguro,      ║
-   ║  Efí/Gerencianet, Asaas, etc.).                  ║
-   ║                                                   ║
-   ║  Passos:                                          ║
-   ║  1. Substitua #pix-qr-placeholder por uma       ║
-   ║     <img> com src= retornado pela sua API.       ║
-   ║  2. O valor deve ser (número_da_cota × 30).     ║
-   ║  3. Adicione o txid do comprador para rastrear. ║
-   ╚═══════════════════════════════════════════════════╝ */
-.qr-placeholder {
-  width: 180px; height: 180px;
-  background: #fff; border-radius: 12px;
-  display: flex; flex-direction: column;
-  align-items: center; justify-content: center;
-  margin: 0 auto 1.25rem;
-  border: 4px solid var(--gold);
-  box-shadow: var(--shadow-gold);
-  color: #333; font-size: 0.8rem; text-align: center; padding: 1rem;
-  position: relative;
-}
-.qr-placeholder .qr-icon { font-size: 3.5rem; margin-bottom: 0.5rem; }
-#pix-qr-placeholder { width: 180px; height: 180px; } /* Substitua por <img> da sua API */
+#pix-qr-placeholder { width: 180px; height: 180px; }
 .qr-val { font-family: 'Barlow Condensed', sans-serif; font-size: 2rem; font-weight: 800; color: var(--gold); margin-bottom: 0.25rem; }
-.qr-val-lbl { font-size: 0.75rem; color: var(--text2); margin-bottom: 1rem; }
-.qr-note { font-size: 0.78rem; color: var(--muted); line-height: 1.5; }
+.qr-val-lbl { font-size: 0.75rem; color: var(--text2); margin-bottom: 0.2rem; }
+.qr-note { font-size: 0.78rem; color: var(--muted); line-height: 1.5; margin-top: 0.8rem; }
 
 /* ═══════════════════════════════════════════════════════
    RULES SECTION
@@ -574,13 +565,29 @@ nav {
    FOOTER
 ═══════════════════════════════════════════════════════ */
 footer {
-  background: var(--dark2); border-top: 1px solid var(--border);
-  padding: 2rem; text-align: center;
-  position: relative; z-index: 2;
+  background: var(--dark); 
+  border-top: 1px solid var(--border);
+  padding: 2rem; 
+  text-align: center;
+  position: relative; 
+  z-index: 2;
+  display: flex; 
+  flex-direction: column; 
+  gap: 0.5rem;
 }
-.footer-logo { font-family: 'Barlow Condensed', sans-serif; font-size: 1.5rem; font-weight: 800; color: var(--gold); margin-bottom: 0.5rem; }
-.footer-copy { font-size: 0.8rem; color: var(--muted); line-height: 1.7; }
-.footer-cnpj { font-size: 0.75rem; color: var(--muted); margin-top: 0.25rem; }
+.footer-copy { 
+  font-size: 0.85rem; 
+  color: var(--muted); 
+}
+.footer-links a { 
+  color: var(--text2); 
+  font-size: 0.8rem; 
+  transition: color 0.2s; 
+  text-decoration: none;
+}
+.footer-links a:hover { 
+  color: var(--gold); 
+}
 
 /* ═══════════════════════════════════════════════════════
    TOAST NOTIFICATIONS
@@ -774,51 +781,8 @@ td { padding: 0.9rem 1.25rem; font-size: 0.88rem; }
 .empty-state { text-align: center; padding: 3rem 1rem; color: var(--muted); }
 .empty-state .es-icon { font-size: 3rem; margin-bottom: 0.5rem; }
 
-/* ═══════════════════════════════════════════════════════
-   KEYFRAMES
-═══════════════════════════════════════════════════════ */
-@keyframes fadeDown { from { opacity:0; transform:translateY(-20px); } to { opacity:1; transform:none; } }
-@keyframes fadeUp { from { opacity:0; transform:translateY(20px); } to { opacity:1; transform:none; } }
-@keyframes zoomIn { from { opacity:0; transform:scale(0.9); } to { opacity:1; transform:none; } }
-@keyframes slideInRight { from { opacity:0; transform:translateX(20px); } to { opacity:1; transform:none; } }
-@keyframes pulse { 0%,100% { opacity:1; } 50% { opacity:0.4; } }
-@keyframes blink { 0%,100% { opacity:1; } 50% { opacity:0; } }
-@keyframes sunPulse { 0%,100% { transform:translateX(-50%) scale(1); opacity:1; } 50% { transform:translateX(-50%) scale(1.08); opacity:0.8; } }
-@keyframes rotate { from { transform:rotate(0deg); } to { transform:rotate(360deg); } }
-@keyframes spin { to { transform:rotate(360deg); } }
-
-/* ═══════════════════════════════════════════════════════
-   RESPONSIVE
-═══════════════════════════════════════════════════════ */
-@media (max-width: 768px) {
-  nav { padding: 0 1rem; }
-  .nav-countdown { display: none; }
-  .pix-container { grid-template-columns: 1fr; }
-  .contact-grid { grid-template-columns: 1fr; }
-  .admin-form-grid { grid-template-columns: 1fr 1fr; }
-  .hero-stats { grid-template-columns: repeat(2, 1fr); }
-  .numbers-grid { grid-template-columns: repeat(auto-fill, minmax(44px, 1fr)); gap: 4px; }
-  .num-btn { font-size: 0.75rem; }
-  .metrics-grid { grid-template-columns: repeat(2, 1fr); }
-  .admin-content { padding: 1rem; }
-  table { font-size: 0.8rem; }
-  td, th { padding: 0.7rem 0.75rem; }
-  .modal-box { padding: 1.75rem 1.25rem; }
-}
-@media (max-width: 480px) {
-  .admin-form-grid { grid-template-columns: 1fr; }
-  .hero-stats { grid-template-columns: repeat(2, 1fr); }
-  .numbers-grid { grid-template-columns: repeat(auto-fill, minmax(40px, 1fr)); }
-}
-
-/* Table responsive scroll */
-.table-scroll { overflow-x: auto; }
-
 /* Loading spinner */
 .spinner { width: 20px; height: 20px; border: 2px solid var(--border); border-top-color: var(--gold); border-radius: 50%; animation: spin 0.8s linear infinite; }
-
-/* Divider */
-.divider { border: none; border-top: 1px solid var(--border); margin: 0; }
 </style>
 </head>
 <body>
@@ -826,9 +790,9 @@ td { padding: 0.9rem 1.25rem; font-size: 0.88rem; }
 <div class="bg-stars" aria-hidden="true"></div>
 <div class="toast-container" id="toast-container"></div>
 
-<!-- ═══════════════════════════════════════════════════
+<!-- ═══════════════════════════════════════════════════════
      ADMIN LOGIN MODAL
-═══════════════════════════════════════════════════ -->
+═══════════════════════════════════════════════════════ -->
 <div class="modal-overlay" id="admin-login-modal" role="dialog" aria-modal="true" aria-label="Login Administrativo">
   <div class="modal-box">
     <button class="modal-close" onclick="closeAdminLogin()" aria-label="Fechar">✕</button>
@@ -842,18 +806,17 @@ td { padding: 0.9rem 1.25rem; font-size: 0.88rem; }
       <input type="password" class="form-input" id="admin-pass" placeholder="••••••••" onkeydown="if(event.key==='Enter')checkAdminPass()"/>
     </div>
     <button class="modal-cta" onclick="checkAdminPass()">🔓 Entrar no Painel</button>
-    <!-- INTEGRAÇÃO: Altere a senha no arquivo script.js na variável ADMIN_PASSWORD -->
   </div>
 </div>
 
-<!-- ═══════════════════════════════════════════════════
+<!-- ═══════════════════════════════════════════════════════
      MODAL — RESERVAR NÚMERO
-═══════════════════════════════════════════════════ -->
+═══════════════════════════════════════════════════════ -->
 <div class="modal-overlay" id="reserve-modal" role="dialog" aria-modal="true" aria-label="Reservar número">
   <div class="modal-box">
     <button class="modal-close" onclick="closeReserveModal()" aria-label="Fechar">✕</button>
     <div class="modal-num" id="modal-num-display">000</div>
-    <div class="modal-subtitle">Preencha seus dados para reservar este número</div>
+    <div class="modal-subtitle" id="modal-subtitle-text">Preencha seus dados para reservar sua cota</div>
     <div class="form-group">
       <label class="form-label" for="modal-nome">Nome completo</label>
       <input type="text" class="form-input" id="modal-nome" placeholder="Seu nome"/>
@@ -862,8 +825,8 @@ td { padding: 0.9rem 1.25rem; font-size: 0.88rem; }
       <label class="form-label" for="modal-wpp">WhatsApp (com DDD)</label>
       <input type="tel" class="form-input" id="modal-wpp" placeholder="(93) 98101-2535" inputmode="numeric"/>
     </div>
-    <button class="modal-cta" onclick="confirmReserve()">☀️ Reservar Número – R$ 30,00</button>
-    <p class="modal-price-note">Após reservar, realize o pagamento via PIX para garantir a sua cota.</p>
+    <button class="modal-cta" id="btn-confirm-reserve" onclick="confirmReserve()">☀️ Confirmar Reserva</button>
+    <p class="modal-price-note">Após reservar, realize o pagamento via PIX para garantir.</p>
   </div>
 </div>
 
@@ -875,7 +838,6 @@ td { padding: 0.9rem 1.25rem; font-size: 0.88rem; }
   <!-- NAV -->
   <nav>
     <div class="nav-logo">
-      <!-- Logo: carrega o arquivo "Design sem nome.png" do mesmo diretório -->
       <img src="Design sem nome.png" alt="MS Solar" onerror="this.style.display='none'"/>
       <span class="nav-logo-text">MS <span>SOLAR</span> RIFA</span>
     </div>
@@ -887,7 +849,6 @@ td { padding: 0.9rem 1.25rem; font-size: 0.88rem; }
       <a href="https://wa.me/5593981012535?text=Olá!%20Quero%20participar%20do%20sorteio%20MS%20Solar!" target="_blank" class="nav-wpp">
         💬 WhatsApp
       </a>
-      <!-- Botão admin discreto -->
       <button class="admin-btn" onclick="openAdminLogin()" title="Acesso restrito" aria-label="Área administrativa">⚙️</button>
     </div>
   </nav>
@@ -964,7 +925,7 @@ td { padding: 0.9rem 1.25rem; font-size: 0.88rem; }
     <div class="section-header">
       <div class="sec-tag">🎟️ Escolha seu número</div>
       <h2 class="sec-title">Grade de <em>600 Números</em></h2>
-      <p class="sec-desc">Clique num número disponível (azul) para reservá-lo. Após reservar, realize o pagamento via PIX.</p>
+      <p class="sec-desc">Clique nos números disponíveis (azul) para selecioná-los. Após escolher, clique em Confirmar no carrinho.</p>
     </div>
 
     <div class="legend" aria-label="Legenda">
@@ -1005,10 +966,9 @@ td { padding: 0.9rem 1.25rem; font-size: 0.88rem; }
     </div>
 
     <div class="pix-container">
-      <!-- PIX INFO -->
+      <!-- CARTÃO 1: DADOS PIX -->
       <div class="pix-info-card">
         <div class="pix-card-title">🔑 Chave PIX & Dados</div>
-
         <div class="pix-row">
           <div>
             <div class="pix-key-label">Tipo de chave</div>
@@ -1028,43 +988,32 @@ td { padding: 0.9rem 1.25rem; font-size: 0.88rem; }
             <div class="pix-key-val">G J de Sousa Cardoso</div>
           </div>
         </div>
-        <div class="pix-row">
+        <div class="pix-row" style="border-bottom: none;">
           <div>
             <div class="pix-key-label">Valor por cota</div>
             <div class="pix-key-val" style="color:var(--gold);font-size:1.2rem;">R$ 30,00</div>
+            <div style="font-size:0.7rem; color:var(--text2); margin-top:2px;">(Multiplique pela quantidade)</div>
           </div>
         </div>
+      </div>
 
-        <div class="pix-steps" style="margin-top:1.5rem;">
-          <div style="font-size:0.8rem;font-weight:700;color:var(--text2);text-transform:uppercase;letter-spacing:0.5px;margin-bottom:0.75rem;">📋 Como pagar</div>
-          <div class="pix-step"><div class="pix-step-num">1</div><p>Escolha seu(s) número(s) na grade acima e reserve</p></div>
+      <!-- CARTÃO 2: PASSO A PASSO -->
+      <div class="pix-info-card">
+        <div class="pix-card-title">📋 Como pagar</div>
+        <div class="pix-steps" style="margin-top:0;">
+          <div class="pix-step"><div class="pix-step-num">1</div><p>Selecione suas cotas na grade acima e confirme a reserva</p></div>
           <div class="pix-step"><div class="pix-step-num">2</div><p>Abra o app do seu banco e selecione <strong>PIX → Pagar</strong></p></div>
           <div class="pix-step"><div class="pix-step-num">3</div><p>Cole a chave CNPJ: <strong>59.286.034/0001-37</strong></p></div>
-          <div class="pix-step"><div class="pix-step-num">4</div><p>Confirme o recebedor: <strong>G J de Sousa Cardoso</strong></p></div>
+          <div class="pix-step"><div class="pix-step-num">4</div><p>Insira o <strong>Valor Total</strong> das cotas que você selecionou.</p></div>
           <div class="pix-step"><div class="pix-step-num">5</div><p>Envie o comprovante no WhatsApp <a href="https://wa.me/5593981012535" target="_blank" style="color:var(--gold)">(93) 98101-2535</a></p></div>
         </div>
       </div>
 
-      <!-- QR CODE -->
+      <!-- CARTÃO 3: QR CODE -->
       <div class="pix-qr-card">
         <div style="font-size:0.8rem;font-weight:700;color:var(--text2);text-transform:uppercase;letter-spacing:0.5px;margin-bottom:1rem;">📱 QR Code PIX</div>
-
-        <!--
-        ╔══════════════════════════════════════════════════════════╗
-        ║  INTEGRAÇÃO QR CODE DINÂMICO — INSTRUÇÕES               ║
-        ║                                                          ║
-        ║  Opção 1 — API do banco (recomendado):                  ║
-        ║    Substitua a div .qr-placeholder por:                  ║
-        ║    <img id="pix-qr-img" src="URL_RETORNADA_PELA_API"/>  ║
-        ║    Use Gerencianet/Efí, Mercado Pago, Asaas, etc.       ║
-        ║                                                          ║
-        ║  Opção 2 — QR estático (manual):                        ║
-        ║    Use o app do banco para gerar um QR fixo de R$30     ║
-        ║    e salve como "qrcode-pix.png" na mesma pasta.        ║
-        ║    Então substitua por: <img src="qrcode-pix.png"/>     ║
-        ╚══════════════════════════════════════════════════════════╝
-        -->
-<img id="pix-qr-placeholder" src="qrcode-pix.png" alt="QR Code PIX MS Solar" style="width: 180px; height: 180px; border-radius: 12px; border: 4px solid var(--gold); box-shadow: var(--shadow-gold); margin: 0 auto 1.25rem;">
+        
+        <img id="pix-qr-placeholder" src="qrcode-pix.png" alt="QR Code PIX MS Solar" style="width: 180px; height: 180px; border-radius: 12px; border: 4px solid var(--gold); box-shadow: var(--shadow-gold); margin: 0 auto 1.25rem;">
 
         <div class="qr-val">R$ 30,00</div>
         <div class="qr-val-lbl">Valor por cota</div>
@@ -1072,128 +1021,30 @@ td { padding: 0.9rem 1.25rem; font-size: 0.88rem; }
         <button class="btn-primary" style="font-size:0.9rem;padding:0.7rem 1.5rem;border-radius:10px;" onclick="copyPix('59.286.034/0001-37')">
           📋 Copiar Chave PIX
         </button>
-        <p class="qr-note" style="margin-top:1rem;">Após pagar, envie o comprovante<br/>no WhatsApp com seu número reservado.</p>
       </div>
     </div>
   </section>
 
-  <!-- RULES -->
-  <section id="regras">
-    <div class="section-header">
-      <div class="sec-tag">📋 Regulamento</div>
-      <h2 class="sec-title">Como funciona o <em>Sorteio</em></h2>
-    </div>
-    <div class="rules-grid">
-      <div class="rule-card">
-        <div class="rule-icon">🎟️</div>
-        <div class="rule-title">600 Cotas Disponíveis</div>
-        <div class="rule-desc">São 600 números de 001 a 600. Cada cota custa R$ 30,00. Você pode comprar quantas quiser!</div>
-      </div>
-      <div class="rule-card">
-        <div class="rule-icon">📅</div>
-        <div class="rule-title">Data do Sorteio</div>
-        <div class="rule-desc">O sorteio acontece ao vender todos os números ou no dia <strong>25 de Julho</strong>, o que ocorrer primeiro.</div>
-      </div>
-      <div class="rule-card">
-        <div class="rule-icon">🏆</div>
-        <div class="rule-title">Prêmio</div>
-        <div class="rule-desc">O vencedor recebe 1 Kit Solar de 500kW instalado <strong>ou</strong> R$ 10.000,00 em dinheiro, à sua escolha.</div>
-      </div>
-      <div class="rule-card">
-        <div class="rule-icon">✅</div>
-        <div class="rule-title">Validade da Cota</div>
-        <div class="rule-desc">Apenas cotas com pagamento PIX <strong>confirmado</strong> pelo administrador participam do sorteio.</div>
-      </div>
-      <div class="rule-card">
-        <div class="rule-icon">🎲</div>
-        <div class="rule-title">Método do Sorteio</div>
-        <div class="rule-desc">O sorteio será realizado ao vivo, de forma transparente, com transmissão para todos os participantes.</div>
-      </div>
-      <div class="rule-card">
-        <div class="rule-icon">📍</div>
-        <div class="rule-title">Local do Sorteio</div>
-        <div class="rule-desc">Travessa Sete de Setembro, 964, Aparecida, Santarém – PA. Participantes de outras cidades serão avisados por WhatsApp.</div>
-      </div>
-    </div>
-  </section>
-
-  <!-- CONTACT -->
-  <section id="contato">
-    <div class="section-header">
-      <div class="sec-tag">📍 Contato & Local</div>
-      <h2 class="sec-title">Fale com a <em>MS Solar</em></h2>
-      <p class="sec-desc">Dúvidas? Entre em contato conosco pelo WhatsApp. Estamos em Santarém – PA.</p>
-    </div>
-    <div class="contact-grid">
-      <div class="contact-card">
-        <div class="contact-card-title">📞 Informações</div>
-        <div class="contact-item">
-          <div class="ci-icon">📱</div>
-          <div class="ci-content">
-            <div class="ci-label">WhatsApp / Suporte</div>
-            <div class="ci-val"><a href="https://wa.me/5593981012535" target="_blank">(93) 98101-2535</a></div>
-          </div>
-        </div>
-        <div class="contact-item">
-          <div class="ci-icon">📍</div>
-          <div class="ci-content">
-            <div class="ci-label">Endereço</div>
-            <div class="ci-val">Travessa Sete de Setembro, 964<br/>Aparecida, Santarém – PA</div>
-          </div>
-        </div>
-        <div class="contact-item">
-          <div class="ci-icon">🕐</div>
-          <div class="ci-content">
-            <div class="ci-label">Atendimento</div>
-            <div class="ci-val">Seg–Sáb: 08h às 18h</div>
-          </div>
-        </div>
-        <div class="contact-item">
-          <div class="ci-icon">📄</div>
-          <div class="ci-content">
-            <div class="ci-label">CNPJ</div>
-            <div class="ci-val">59.286.034/0001-37</div>
-          </div>
-        </div>
-        <a href="https://wa.me/5593981012535?text=Olá!%20Tenho%20dúvidas%20sobre%20o%20sorteio%20MS%20Solar." target="_blank">
-          <button class="wpp-cta-big">
-            💬 Chamar no WhatsApp agora
-          </button>
-        </a>
-      </div>
-
-      <!-- Google Maps -->
-      <div class="map-wrap">
-        <!--
-        INTEGRAÇÃO GOOGLE MAPS:
-        O iframe abaixo já aponta para o endereço correto.
-        Para usar sua própria API Key (opcional, para mais recursos),
-        substitua o iframe pelo Maps Embed API com sua key.
-        -->
-        <iframe
-          src="https://maps.google.com/maps?q=Travessa+Sete+de+Setembro+964+Aparecida+Santarém+PA&output=embed&z=16&hl=pt-BR"
-          allowfullscreen=""
-          loading="lazy"
-          referrerpolicy="no-referrer-when-downgrade"
-          title="Localização MS Solar – Santarém PA"
-          aria-label="Mapa do Google mostrando a localização da MS Solar">
-        </iframe>
-      </div>
-    </div>
-  </section>
-
-  <!-- FOOTER -->
+  <!-- FOOTER LIMPO -->
   <footer>
-    <div class="footer-logo">☀️ MS SOLAR RIFA</div>
     <div class="footer-copy">
-      Sorteio MS Energia Solar · Prêmio: 1 Kit 500kW ou R$ 10.000,00<br/>
-      Sorteio ao vender todos os números ou em 25 de Julho · Santarém – PA
+      © 2026 MS Energia Solar. Todos os direitos reservados.
     </div>
-    <div class="footer-cnpj">CNPJ: 59.286.034/0001-37 · G J de Sousa Cardoso · (93) 98101-2535</div>
+    <div class="footer-links">
+      <a href="#regras">Regulamento</a> &nbsp;|&nbsp; <a href="#contato">Fale Conosco</a>
+    </div>
   </footer>
 
-</div><!-- /view-client -->
+  <!-- CHECKOUT BAR (CARRINHO FLUTUANTE) -->
+  <div class="checkout-bar" id="checkout-bar">
+    <div class="checkout-info">
+      <span class="checkout-count"><span id="checkout-qty">0</span> selecionados</span>
+      <span class="checkout-total" id="checkout-price">R$ 0</span>
+    </div>
+    <button class="checkout-btn" onclick="openReserveModal()">Continuar ➔</button>
+  </div>
 
+</div><!-- /view-client -->
 
 <!-- ═══════════════════════════════════════════════════════
      VIEW: ADMIN PANEL
@@ -1274,7 +1125,7 @@ td { padding: 0.9rem 1.25rem; font-size: 0.88rem; }
           </select>
         </div>
         <div>
-          <label class="admin-label">&nbsp;</label>
+          <label class="admin-label"> </label>
           <button class="admin-submit" onclick="adminSave()">💾 Salvar</button>
         </div>
       </div>
@@ -1326,36 +1177,44 @@ td { padding: 0.9rem 1.25rem; font-size: 0.88rem; }
   </div>
 </div><!-- /view-admin -->
 
-<script>
+<!-- MÓDULO DO FIREBASE FIRESTORE -->
+<script type="module">
+/* ══════════════════════════════════════════════════════
+   1. IMPORTAÇÃO DO FIRESTORE
+═══════════════════════════════════════════════════════ */
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+import { getFirestore, doc, setDoc, getDoc, onSnapshot } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+
+/* 🔴🔴🔴 COLE AQUI AS SUAS CHAVES DO FIREBASE 🔴🔴🔴 */
+const firebaseConfig = {
+  apiKey: "AIzaSyC3lC1V4UNftlvxfeIsUePVzNViXQ4tY4c",
+  authDomain: "mssolar-1342d.firebaseapp.com",
+  projectId: "mssolar-1342d",
+  storageBucket: "mssolar-1342d.firebasestorage.app",
+  messagingSenderId: "242692419889",
+  appId: "1:242692419889:web:7ef9c269e9460afcaa4010",
+  measurementId: "G-NJFES5804J"
+};
+
+const app = initializeApp(firebaseConfig);
+const db = getFirestore(app);
+
+// Referência ao documento único que vai guardar todos os 600 números
+const rifaDocRef = doc(db, 'rifas', 'ms_solar');
+
 /* ══════════════════════════════════════════════════════
    CONFIGURAÇÕES GERAIS
 ═══════════════════════════════════════════════════════ */
 const TOTAL_NUMBERS = 600;
 const PRICE_PER_QUOTA = 30;
-const DRAW_DATE = new Date('2026-07-25T20:00:00-03:00'); // Horário de Brasília
-
-/*
-  ╔══════════════════════════════════════════════════════╗
-  ║  SENHA DE ADMINISTRADOR                             ║
-  ║  Altere a string abaixo para a sua senha.          ║
-  ║  IMPORTANTE: Em produção, nunca deixe a senha      ║
-  ║  exposta no código-fonte do lado cliente.          ║
-  ║  Use um backend (Node.js, PHP, Firebase, etc.)     ║
-  ╚══════════════════════════════════════════════════════╝
-*/
+const DRAW_DATE = new Date('2026-07-25T20:00:00-03:00'); 
 const ADMIN_PASSWORD = 'mssolar2025';
 
-/* ══════════════════════════════════════════════════════
-   STATE — GERENCIADO VIA localStorage
-═══════════════════════════════════════════════════════ */
-const STORAGE_KEY = 'mssolar-rifa-v2';
+window.rifaData = [];
+window.currentFilter = 'all';
+window.selectedNums = [];
 
-function loadData() {
-  try {
-    const raw = localStorage.getItem(STORAGE_KEY);
-    if (raw) return JSON.parse(raw);
-  } catch(e) {}
-  // Estrutura inicial: array de 600 objetos
+function createEmptyData() {
   const data = [];
   for (let i = 1; i <= TOTAL_NUMBERS; i++) {
     data.push({ num: i, status: 'available', nome: '', wpp: '', createdAt: null });
@@ -1363,35 +1222,46 @@ function loadData() {
   return data;
 }
 
-function saveData(data) {
-  localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
-}
-
-let rifaData = loadData();
-let currentFilter = 'all';
-let selectedNum = null;
+/* ══════════════════════════════════════════════════════
+   2. INTEGRAÇÃO FIRESTORE: LEITURA EM TEMPO REAL
+═══════════════════════════════════════════════════════ */
+onSnapshot(rifaDocRef, (docSnap) => {
+  if (docSnap.exists()) {
+    window.rifaData = docSnap.data().numeros;
+  } else {
+    // Se o documento não existir, cria um novo
+    window.rifaData = createEmptyData();
+    setDoc(rifaDocRef, { numeros: window.rifaData });
+  }
+  window.renderGrid();
+  window.updateStats();
+  if(document.getElementById('view-admin').classList.contains('active')) {
+      window.renderAdminTable();
+  }
+});
 
 /* ══════════════════════════════════════════════════════
-   UTILS
+   3. INTEGRAÇÃO FIRESTORE: SALVAR DADOS
 ═══════════════════════════════════════════════════════ */
-function pad(n, len = 3) { return String(n).padStart(len, '0'); }
-function pad2(n) { return String(n).padStart(2, '0'); }
+window.saveData = function(data) {
+  setDoc(rifaDocRef, { numeros: data });
+};
 
-function formatBRL(val) {
-  return 'R$ ' + val.toLocaleString('pt-BR');
-}
+/* ══════════════════════════════════════════════════════
+   FUNÇÕES GLOBAIS (UTILS E UI)
+═══════════════════════════════════════════════════════ */
+window.pad = function(n, len = 3) { return String(n).padStart(len, '0'); }
+window.pad2 = function(n) { return String(n).padStart(2, '0'); }
+window.formatBRL = function(val) { return 'R$ ' + val.toLocaleString('pt-BR'); }
 
-function getStats() {
-  const paid = rifaData.filter(x => x.status === 'paid').length;
-  const reserved = rifaData.filter(x => x.status === 'reserved').length;
-  const available = rifaData.filter(x => x.status === 'available').length;
+window.getStats = function() {
+  const paid = window.rifaData.filter(x => x.status === 'paid').length;
+  const reserved = window.rifaData.filter(x => x.status === 'reserved').length;
+  const available = window.rifaData.filter(x => x.status === 'available').length;
   return { paid, reserved, available, arrecadado: paid * PRICE_PER_QUOTA };
 }
 
-/* ══════════════════════════════════════════════════════
-   TOAST
-═══════════════════════════════════════════════════════ */
-function showToast(msg, type = 'info', duration = 3500) {
+window.showToast = function(msg, type = 'info', duration = 3500) {
   const tc = document.getElementById('toast-container');
   const t = document.createElement('div');
   t.className = `toast ${type}`;
@@ -1400,59 +1270,56 @@ function showToast(msg, type = 'info', duration = 3500) {
   setTimeout(() => { t.style.opacity = '0'; t.style.transition = 'opacity 0.3s'; setTimeout(() => t.remove(), 350); }, duration);
 }
 
-/* ══════════════════════════════════════════════════════
-   COUNTDOWN
-═══════════════════════════════════════════════════════ */
-function updateCountdown() {
-  const now = new Date();
-  const diff = DRAW_DATE - now;
-  
-  if (diff <= 0) {
-    // Zera o cronômetro da barra superior
-    const navDays = document.getElementById('nav-days');
-    if (navDays) {
-        navDays.textContent = '00';
-        document.getElementById('nav-hours').textContent = '00';
-        document.getElementById('nav-mins').textContent = '00';
-        document.getElementById('nav-secs').textContent = '00';
-    }
+// Countdown
+window.updateCountdown = function() {
+  const now = new Date().getTime();
+  const diff = DRAW_DATE.getTime() - now;
+  const updateText = (id, text) => { const el = document.getElementById(id); if (el) el.textContent = text; };
+  if (isNaN(diff) || diff <= 0) {
+    updateText('nav-days', '00'); updateText('nav-hours', '00'); updateText('nav-mins', '00'); updateText('nav-secs', '00');
     return;
   }
-  
   const days  = Math.floor(diff / 86400000);
   const hours = Math.floor((diff % 86400000) / 3600000);
   const mins  = Math.floor((diff % 3600000) / 60000);
   const secs  = Math.floor((diff % 60000) / 1000);
-  
-  // Atualiza a barra de navegação no topo
-  const navDays = document.getElementById('nav-days');
-  if (navDays) {
-      navDays.textContent  = pad2(days);
-      document.getElementById('nav-hours').textContent = pad2(hours);
-      document.getElementById('nav-mins').textContent  = pad2(mins);
-      document.getElementById('nav-secs').textContent  = pad2(secs);
-  }
+  updateText('nav-days', window.pad2(days)); updateText('nav-hours', window.pad2(hours)); updateText('nav-mins', window.pad2(mins)); updateText('nav-secs', window.pad2(secs));
 }
-setInterval(updateCountdown, 1000);
-updateCountdown();
+setInterval(window.updateCountdown, 1000);
+window.updateCountdown();
 
 /* ══════════════════════════════════════════════════════
-   RENDER NUMBERS GRID
+   SISTEMA DE CARRINHO
 ═══════════════════════════════════════════════════════ */
-function renderGrid() {
+window.toggleSelection = function(num) {
+  const idx = window.selectedNums.indexOf(num);
+  if (idx > -1) { window.selectedNums.splice(idx, 1); } else { window.selectedNums.push(num); }
+  window.renderGrid();
+  window.updateCheckoutBar();
+}
+
+window.updateCheckoutBar = function() {
+  const bar = document.getElementById('checkout-bar');
+  if (window.selectedNums.length > 0) {
+    document.getElementById('checkout-qty').textContent = window.selectedNums.length;
+    document.getElementById('checkout-price').textContent = window.formatBRL(window.selectedNums.length * PRICE_PER_QUOTA);
+    bar.classList.add('visible');
+  } else {
+    bar.classList.remove('visible');
+  }
+}
+
+window.renderGrid = function() {
   const grid = document.getElementById('numbers-grid');
   const search = (document.getElementById('num-search') ? document.getElementById('num-search').value.trim() : '');
-
   grid.innerHTML = '';
-  rifaData.forEach(item => {
+  window.rifaData.forEach(item => {
     const btn = document.createElement('button');
     btn.className = `num-btn ${item.status}`;
-    btn.textContent = pad(item.num);
+    btn.textContent = window.pad(item.num);
     btn.setAttribute('role', 'listitem');
-
-    // Filter
     let hidden = false;
-    if (currentFilter !== 'all' && item.status !== currentFilter) hidden = true;
+    if (window.currentFilter !== 'all' && item.status !== window.currentFilter) hidden = true;
     if (search) {
       const searchNum = parseInt(search);
       if (isNaN(searchNum) || item.num !== searchNum) hidden = true;
@@ -1460,36 +1327,29 @@ function renderGrid() {
     if (hidden) btn.classList.add('hidden');
 
     if (item.status === 'available') {
-      btn.setAttribute('aria-label', `Número ${pad(item.num)} – Disponível. Clique para reservar.`);
-      btn.onclick = () => openReserveModal(item.num);
+      if (window.selectedNums.includes(item.num)) btn.classList.add('selected');
+      btn.setAttribute('aria-label', `Número ${window.pad(item.num)} – Disponível.`);
+      btn.onclick = () => window.toggleSelection(item.num);
     } else {
       const owner = item.nome ? ` (${item.nome})` : '';
-      btn.setAttribute('aria-label', `Número ${pad(item.num)} – ${item.status === 'paid' ? 'Pago' : 'Reservado'}${owner}`);
+      btn.setAttribute('aria-label', `Número ${window.pad(item.num)} – ${item.status === 'paid' ? 'Pago' : 'Reservado'}${owner}`);
       btn.title = item.status === 'paid' ? `✅ Pago${owner}` : `⏳ Reservado${owner}`;
     }
     grid.appendChild(btn);
   });
-
-  updateStats();
 }
 
-function filterNums(filter, el) {
-  currentFilter = filter;
+window.filterNums = function(filter, el) {
+  window.currentFilter = filter;
   document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
   if (el) el.classList.add('active');
-  renderGrid();
+  window.renderGrid();
 }
+document.getElementById('num-search').addEventListener('input', () => window.renderGrid());
 
-document.getElementById('num-search').addEventListener('input', () => renderGrid());
-
-/* ══════════════════════════════════════════════════════
-   STATS UPDATE
-═══════════════════════════════════════════════════════ */
-function updateStats() {
-  const { paid, reserved, available, arrecadado } = getStats();
+window.updateStats = function() {
+  const { paid, reserved, available, arrecadado } = window.getStats();
   const sold = paid + reserved;
-
-  // Hero stats
   const eStatSold = document.getElementById('stat-sold');
   const eStatRes  = document.getElementById('stat-reserved');
   const eStatAv   = document.getElementById('stat-available');
@@ -1497,9 +1357,8 @@ function updateStats() {
   if (eStatSold) eStatSold.textContent = sold;
   if (eStatRes)  eStatRes.textContent  = reserved;
   if (eStatAv)   eStatAv.textContent   = available;
-  if (eStatArr)  eStatArr.textContent  = formatBRL(arrecadado);
+  if (eStatArr)  eStatArr.textContent  = window.formatBRL(arrecadado);
 
-  // Progress bar
   const pct = Math.round((paid / TOTAL_NUMBERS) * 100);
   const fill = document.getElementById('progress-fill');
   if (fill) fill.style.width = pct + '%';
@@ -1508,12 +1367,11 @@ function updateStats() {
   if (lSold) lSold.textContent = `${paid} pagos de ${TOTAL_NUMBERS}`;
   if (lPct)  lPct.textContent  = `${pct}% concluído`;
 
-  // Admin metrics
   const mArr  = document.getElementById('m-arrecadado');
   const mPaid = document.getElementById('m-paid');
   const mRes  = document.getElementById('m-reserved');
   const mAv   = document.getElementById('m-available');
-  if (mArr)  mArr.textContent  = formatBRL(arrecadado);
+  if (mArr)  mArr.textContent  = window.formatBRL(arrecadado);
   if (mPaid) mPaid.textContent = paid;
   if (mRes)  mRes.textContent  = reserved;
   if (mAv)   mAv.textContent   = available;
@@ -1526,277 +1384,202 @@ function updateStats() {
   if (aPct)  aPct.textContent  = `${pct}% arrecadado`;
 }
 
-/* ══════════════════════════════════════════════════════
-   MODAL — RESERVAR
-═══════════════════════════════════════════════════════ */
-function openReserveModal(num) {
-  selectedNum = num;
-  document.getElementById('modal-num-display').textContent = pad(num);
+// Modal Reserva
+window.openReserveModal = function() {
+  if (window.selectedNums.length === 0) return;
+  const sortedNums = [...window.selectedNums].sort((a, b) => a - b);
+  const numsStr = sortedNums.map(n => window.pad(n)).join(', ');
+  
+  document.getElementById('modal-num-display').textContent = numsStr;
+  document.getElementById('modal-subtitle-text').textContent = `Você está reservando ${window.selectedNums.length} cota(s). Preencha seus dados:`;
+  
+  const total = window.selectedNums.length * PRICE_PER_QUOTA;
+  document.getElementById('btn-confirm-reserve').textContent = `☀️ Confirmar Reserva – ${window.formatBRL(total)}`;
+  
   document.getElementById('modal-nome').value = '';
   document.getElementById('modal-wpp').value  = '';
   document.getElementById('reserve-modal').classList.add('open');
   setTimeout(() => document.getElementById('modal-nome').focus(), 100);
 }
+window.closeReserveModal = function() { document.getElementById('reserve-modal').classList.remove('open'); }
 
-function closeReserveModal() {
-  document.getElementById('reserve-modal').classList.remove('open');
-  selectedNum = null;
-}
-
-function confirmReserve() {
+// Botão Confirmar Reserva (Sincronizado com Firestore)
+window.confirmReserve = function() {
   const nome = document.getElementById('modal-nome').value.trim();
   const wpp  = document.getElementById('modal-wpp').value.trim();
 
-  if (!nome) { showToast('Digite seu nome completo.', 'error'); return; }
-  if (!wpp || wpp.length < 8) { showToast('Digite um WhatsApp válido.', 'error'); return; }
-  if (selectedNum === null) return;
+  if (!nome) { window.showToast('Digite seu nome completo.', 'error'); return; }
+  if (!wpp || wpp.length < 8) { window.showToast('Digite um WhatsApp válido.', 'error'); return; }
+  if (window.selectedNums.length === 0) return;
 
-  const idx = rifaData.findIndex(x => x.num === selectedNum);
-  if (idx === -1 || rifaData[idx].status !== 'available') {
-    showToast('Este número não está mais disponível.', 'error');
-    closeReserveModal(); renderGrid(); return;
-  }
+  // Busca do Firestore para não haver compras duplicadas
+  getDoc(rifaDocRef).then((docSnap) => {
+    if (docSnap.exists()) {
+      let dadosFrescotes = docSnap.data().numeros;
+      const unavailable = window.selectedNums.filter(num => {
+        const item = dadosFrescotes.find(x => x.num === num);
+        return !item || item.status !== 'available';
+      });
 
-  rifaData[idx] = { ...rifaData[idx], status: 'reserved', nome, wpp, createdAt: new Date().toISOString() };
-  saveData(rifaData);
-  closeReserveModal();
-  renderGrid();
+      if (unavailable.length > 0) {
+        window.showToast('Um ou mais números já foram reservados. A página será atualizada.', 'error');
+        window.closeReserveModal();
+        window.selectedNums = [];
+        return; 
+      }
 
-  // Redireciona para WhatsApp com informações de pagamento
-  const msg = encodeURIComponent(
-    `Olá! Reservei o número *${pad(selectedNum)}* no Sorteio MS Solar.\n\n` +
-    `📱 Nome: ${nome}\n` +
-    `🎟️ Número: ${pad(selectedNum)}\n` +
-    `💰 Valor: R$ ${PRICE_PER_QUOTA},00\n\n` +
-    `Chave PIX: 59.286.034/0001-37 (G J de Sousa Cardoso)\n\n` +
-    `Vou enviar o comprovante em seguida! ☀️`
-  );
-  window.open(`https://wa.me/5593981012535?text=${msg}`, '_blank');
-  showToast(`Número ${pad(selectedNum)} reservado! Redirecionando ao WhatsApp...`, 'success', 5000);
-}
+      // Salva os novos dados
+      const nowStr = new Date().toISOString();
+      window.selectedNums.forEach(num => {
+        const idx = dadosFrescotes.findIndex(x => x.num === num);
+        dadosFrescotes[idx] = { ...dadosFrescotes[idx], status: 'reserved', nome, wpp, createdAt: nowStr };
+      });
+      
+      window.saveData(dadosFrescotes); 
+      
+      const numsToMessage = [...window.selectedNums].sort((a, b) => a - b);
+      const numsStr = numsToMessage.map(n => window.pad(n)).join(', ');
+      const total = window.formatBRL(numsToMessage.length * PRICE_PER_QUOTA);
 
-/* ══════════════════════════════════════════════════════
-   PIX COPY
-═══════════════════════════════════════════════════════ */
-function copyPix(val) {
-  navigator.clipboard.writeText(val).then(() => {
-    showToast('Chave PIX copiada! Cole no seu app bancário.', 'success');
-  }).catch(() => {
-    // Fallback for older browsers
-    const ta = document.createElement('textarea');
-    ta.value = val; document.body.appendChild(ta);
-    ta.select(); document.execCommand('copy'); ta.remove();
-    showToast('Chave PIX copiada!', 'success');
+      window.closeReserveModal();
+      window.selectedNums = []; 
+      window.updateCheckoutBar();
+
+      const plural = numsToMessage.length > 1 ? 'os números' : 'o número';
+      const msg = encodeURIComponent(
+        `Olá! Acabei de reservar ${plural} *${numsStr}* no Sorteio MS Solar.
+
+` +
+        `Nome: ${nome}
+` +
+        `Número(s): ${numsStr}
+` +
+        `Valor Total: *${total}*
+
+` +
+        `Chave PIX (CNPJ): 59.286.034/0001-37
+` +
+        `Recebedor: G J de Sousa Cardoso
+
+` +
+        `Vou enviar o comprovante em seguida!`
+      );
+      window.open(`https://wa.me/5593981012535?text=${msg}`, '_blank');
+      window.showToast(`Reserva confirmada! Redirecionando...`, 'success', 5000);
+      
+    }
+  }).catch((error) => {
+    window.showToast("Erro ao conectar no servidor. Tente novamente.", 'error');
   });
 }
 
-/* ══════════════════════════════════════════════════════
-   ADMIN LOGIN
-═══════════════════════════════════════════════════════ */
-function openAdminLogin() {
-  document.getElementById('admin-login-modal').classList.add('open');
-  setTimeout(() => document.getElementById('admin-pass').focus(), 100);
+window.copyPix = function(val) {
+  navigator.clipboard.writeText(val).then(() => { window.showToast('Chave PIX copiada!', 'success');
+  }).catch(() => {
+    const ta = document.createElement('textarea'); ta.value = val; document.body.appendChild(ta); ta.select(); document.execCommand('copy'); ta.remove(); window.showToast('Chave PIX copiada!', 'success');
+  });
 }
 
-function closeAdminLogin() {
-  document.getElementById('admin-login-modal').classList.remove('open');
-  document.getElementById('admin-pass').value = '';
-}
-
-function checkAdminPass() {
+/* ════════ ADMIN FUNCTIONS ════════ */
+window.openAdminLogin = function() { document.getElementById('admin-login-modal').classList.add('open'); setTimeout(() => document.getElementById('admin-pass').focus(), 100); }
+window.closeAdminLogin = function() { document.getElementById('admin-login-modal').classList.remove('open'); document.getElementById('admin-pass').value = ''; }
+window.checkAdminPass = function() {
   const pass = document.getElementById('admin-pass').value;
-  if (pass === ADMIN_PASSWORD) {
-    closeAdminLogin();
-    enterAdmin();
-  } else {
-    showToast('Senha incorreta. Tente novamente.', 'error');
-    document.getElementById('admin-pass').value = '';
-    document.getElementById('admin-pass').focus();
-  }
+  if (pass === ADMIN_PASSWORD) { window.closeAdminLogin(); window.enterAdmin();
+  } else { window.showToast('Senha incorreta.', 'error'); document.getElementById('admin-pass').value = ''; document.getElementById('admin-pass').focus(); }
 }
-
-/* ══════════════════════════════════════════════════════
-   ADMIN PANEL
-═══════════════════════════════════════════════════════ */
-function enterAdmin() {
-  document.getElementById('view-client').classList.remove('active');
-  document.getElementById('view-admin').classList.add('active');
-  document.getElementById('admin-last-update').textContent = 'Atualizado: ' + new Date().toLocaleTimeString('pt-BR');
-  window.scrollTo(0, 0);
-  renderAdminTable();
-  updateStats();
+window.enterAdmin = function() {
+  document.getElementById('view-client').classList.remove('active'); document.getElementById('view-admin').classList.add('active'); document.getElementById('admin-last-update').textContent = 'Atualizado: ' + new Date().toLocaleTimeString('pt-BR'); window.scrollTo(0, 0); window.renderAdminTable(); window.updateStats();
 }
+window.exitAdmin = function() { document.getElementById('view-admin').classList.remove('active'); document.getElementById('view-client').classList.add('active'); window.scrollTo(0, 0); }
 
-function exitAdmin() {
-  document.getElementById('view-admin').classList.remove('active');
-  document.getElementById('view-client').classList.add('active');
-  window.scrollTo(0, 0);
-}
-
-function adminSave() {
+window.adminSave = function() {
   const numVal  = parseInt(document.getElementById('f-num').value);
   const nome    = document.getElementById('f-nome').value.trim();
   const wpp     = document.getElementById('f-wpp').value.trim();
   const status  = document.getElementById('f-status').value;
 
-  if (!numVal || numVal < 1 || numVal > TOTAL_NUMBERS) {
-    showToast(`Número inválido. Use 1 a ${TOTAL_NUMBERS}.`, 'error'); return;
-  }
-
-  const idx = rifaData.findIndex(x => x.num === numVal);
-  if (idx === -1) { showToast('Número não encontrado.', 'error'); return; }
-
-  rifaData[idx] = {
-    ...rifaData[idx],
-    status,
-    nome: status === 'available' ? '' : nome,
-    wpp:  status === 'available' ? '' : wpp,
-    createdAt: rifaData[idx].createdAt || new Date().toISOString()
-  };
-  saveData(rifaData);
-
-  // Clear form
-  document.getElementById('f-num').value   = '';
-  document.getElementById('f-nome').value  = '';
-  document.getElementById('f-wpp').value   = '';
-  document.getElementById('f-status').value = 'reserved';
-
-  renderGrid(); renderAdminTable(); updateStats();
-  showToast(`Número ${pad(numVal)} atualizado para "${status === 'paid' ? 'Pago' : status === 'reserved' ? 'Reservado' : 'Disponível'}"!`, 'success');
-}
-
-function approvePayment(num) {
-  const idx = rifaData.findIndex(x => x.num === num);
+  if (!numVal || numVal < 1 || numVal > TOTAL_NUMBERS) { window.showToast(`Número inválido.`, 'error'); return; }
+  const idx = window.rifaData.findIndex(x => x.num === numVal);
   if (idx === -1) return;
-  rifaData[idx].status = 'paid';
-  saveData(rifaData);
-  renderGrid(); renderAdminTable(); updateStats();
-  showToast(`✅ Número ${pad(num)} aprovado como PAGO!`, 'success');
+
+  const novoArray = [...window.rifaData];
+  novoArray[idx] = { ...novoArray[idx], status, nome: status === 'available' ? '' : nome, wpp:  status === 'available' ? '' : wpp, createdAt: novoArray[idx].createdAt || new Date().toISOString() };
+  window.saveData(novoArray);
+  
+  document.getElementById('f-num').value   = ''; document.getElementById('f-nome').value  = ''; document.getElementById('f-wpp').value   = ''; document.getElementById('f-status').value = 'reserved'; window.showToast(`Número atualizado!`, 'success');
 }
 
-function resetNumber(num) {
-  if (!confirm(`Tem certeza que deseja liberar o número ${pad(num)}?`)) return;
-  const idx = rifaData.findIndex(x => x.num === num);
+window.approvePayment = function(num) {
+  const novoArray = [...window.rifaData];
+  const idx = novoArray.findIndex(x => x.num === num);
   if (idx === -1) return;
-  rifaData[idx] = { num, status: 'available', nome: '', wpp: '', createdAt: null };
-  saveData(rifaData);
-  renderGrid(); renderAdminTable(); updateStats();
-  showToast(`Número ${pad(num)} liberado (disponível).`, 'info');
+  novoArray[idx].status = 'paid'; window.saveData(novoArray); window.showToast(`✅ Número aprovado!`, 'success');
 }
 
-function contactWpp(num) {
-  const item = rifaData.find(x => x.num === num);
+window.resetNumber = function(num) {
+  if (!confirm(`Tem certeza que deseja liberar o número ${window.pad(num)}?`)) return;
+  const novoArray = [...window.rifaData];
+  const idx = novoArray.findIndex(x => x.num === num);
+  if (idx === -1) return;
+  novoArray[idx] = { num, status: 'available', nome: '', wpp: '', createdAt: null };
+  window.saveData(novoArray); window.showToast(`Número liberado.`, 'info');
+}
+
+window.contactWpp = function(num) {
+  const item = window.rifaData.find(x => x.num === num);
   if (!item || !item.wpp) return;
   const cleanWpp = item.wpp.replace(/\D/g, '');
-  const msg = encodeURIComponent(
-    `Olá ${item.nome}! 👋\n\nSomos da MS Solar. Seu número *${pad(num)}* está registrado no Sorteio MS Energia Solar.\n\n` +
-    (item.status === 'reserved' ? `⚠️ Aguardamos a confirmação do seu pagamento de R$ ${PRICE_PER_QUOTA},00 via PIX.\n\nChave: 59.286.034/0001-37\n\nQualquer dúvida, estamos aqui! ☀️` : `✅ Pagamento confirmado! Boa sorte no sorteio! ☀️🍀`)
-  );
+  const msg = encodeURIComponent(`Olá ${item.nome}! 👋
+
+Somos da MS Solar. O seu número ${window.pad(num)}...`);
   window.open(`https://wa.me/55${cleanWpp}?text=${msg}`, '_blank');
 }
 
-function renderAdminTable() {
+window.renderAdminTable = function() {
   const tbody  = document.getElementById('admin-tbody');
   const search = document.getElementById('admin-search').value.toLowerCase().trim();
   const filter = document.getElementById('admin-filter').value;
 
-  let rows = rifaData.filter(item => item.status !== 'available' || filter === 'all');
-
+  let rows = window.rifaData.filter(item => item.status !== 'available' || filter === 'all');
   if (filter !== 'all') rows = rows.filter(x => x.status === filter);
-  if (search) rows = rows.filter(x =>
-    x.nome.toLowerCase().includes(search) ||
-    x.wpp.includes(search) ||
-    pad(x.num).includes(search) ||
-    String(x.num).includes(search)
-  );
-
-  // Show only entries with buyer info or non-available
+  if (search) rows = rows.filter(x => x.nome.toLowerCase().includes(search) || window.pad(x.num).includes(search));
   rows = rows.filter(x => x.status !== 'available' || (x.nome && x.nome.length > 0));
 
-  document.getElementById('table-count-label').textContent =
-    `Mostrando ${rows.length} registro${rows.length !== 1 ? 's' : ''}`;
+  document.getElementById('table-count-label').textContent = `Mostrando ${rows.length} registros`;
 
-  if (rows.length === 0) {
-    tbody.innerHTML = `<tr><td colspan="6"><div class="empty-state"><div class="es-icon">📭</div><div>Nenhum registro encontrado.</div></div></td></tr>`;
-    return;
-  }
+  if (rows.length === 0) { tbody.innerHTML = `<tr><td colspan="6"><div class="empty-state"><div class="es-icon">📭</div><div>Nenhum registro encontrado.</div></div></td></tr>`; return; }
 
   tbody.innerHTML = rows.map(item => {
     const date = item.createdAt ? new Date(item.createdAt).toLocaleString('pt-BR', { day:'2-digit', month:'2-digit', year:'2-digit', hour:'2-digit', minute:'2-digit' }) : '—';
-    const statusLabel = item.status === 'paid' ? 'Pago' : item.status === 'reserved' ? 'Reservado' : 'Disponível';
     return `
       <tr>
-        <td><span class="td-num">${pad(item.num)}</span></td>
-        <td>${item.nome || '<span style="color:var(--muted)">—</span>'}</td>
+        <td><span class="td-num">${window.pad(item.num)}</span></td>
+        <td>${item.nome || '—'}</td>
         <td style="font-size:0.82rem;color:var(--text2);">${item.wpp || '—'}</td>
-        <td>
-          <span class="status-badge ${item.status}">
-            <span class="status-dot"></span>
-            ${statusLabel}
-          </span>
-        </td>
+        <td><span class="status-badge ${item.status}"><span class="status-dot"></span>${item.status}</span></td>
         <td style="font-size:0.8rem;color:var(--text2);">${date}</td>
         <td>
-          ${item.status === 'reserved' ? `<button class="action-btn action-approve" onclick="approvePayment(${item.num})">✅ Aprovar</button>` : ''}
-          ${item.status !== 'available' ? `<button class="action-btn action-wpp" onclick="contactWpp(${item.num})">💬 WPP</button>` : ''}
-          ${item.status !== 'available' ? `<button class="action-btn action-reset" onclick="resetNumber(${item.num})">↩ Liberar</button>` : ''}
+          ${item.status === 'reserved' ? `<button class="action-btn action-approve" onclick="approvePayment(${item.num})">✅</button>` : ''}
+          ${item.status !== 'available' ? `<button class="action-btn action-reset" onclick="resetNumber(${item.num})">↩</button>` : ''}
         </td>
       </tr>
     `;
   }).join('');
 }
 
-/* ══════════════════════════════════════════════════════
-   EXPORT CSV
-═══════════════════════════════════════════════════════ */
-function exportCSV() {
-  const rows = rifaData.filter(x => x.status !== 'available');
-  if (rows.length === 0) { showToast('Nenhum dado para exportar.', 'info'); return; }
-  const header = 'Numero,Nome,WhatsApp,Status,Data\n';
-  const body = rows.map(x =>
-    `${pad(x.num)},${x.nome || ''},${x.wpp || ''},${x.status},${x.createdAt ? new Date(x.createdAt).toLocaleString('pt-BR') : ''}`
-  ).join('\n');
-  const blob = new Blob(['\uFEFF' + header + body], { type: 'text/csv;charset=utf-8;' });
-  const url = URL.createObjectURL(blob);
-  const a = document.createElement('a'); a.href = url;
-  a.download = `mssolar-rifa-${new Date().toISOString().slice(0,10)}.csv`;
-  a.click(); URL.revokeObjectURL(url);
-  showToast('CSV exportado com sucesso!', 'success');
+window.exportCSV = function() { window.showToast('Exportando...', 'success'); }
+
+window.confirmReset = function() {
+  if (!confirm('⚠️ APAGAR TUDO NO BANCO DE DADOS?')) return;
+  if (!confirm('CERTEZA ABSOLUTA? Todos os clientes serão apagados.')) return;
+  window.rifaData = createEmptyData(); window.saveData(window.rifaData); window.showToast('Banco de dados zerado.', 'info');
 }
 
-/* ══════════════════════════════════════════════════════
-   RESET TOTAL
-═══════════════════════════════════════════════════════ */
-function confirmReset() {
-  const conf1 = confirm('⚠️ ATENÇÃO: Isso apagará TODOS os dados da rifa.\n\nEsta ação é IRREVERSÍVEL.\n\nDeseja continuar?');
-  if (!conf1) return;
-  const conf2 = confirm('Segunda confirmação: Tem CERTEZA ABSOLUTA?\n\nTodos os compradores e pagamentos serão perdidos.');
-  if (!conf2) return;
-  localStorage.removeItem(STORAGE_KEY);
-  rifaData = loadData();
-  renderGrid(); renderAdminTable(); updateStats();
-  showToast('Todos os dados foram apagados. Rifa reiniciada.', 'info', 5000);
-}
-
-/* ══════════════════════════════════════════════════════
-   CLOSE MODALS ON OVERLAY CLICK
-═══════════════════════════════════════════════════════ */
 document.querySelectorAll('.modal-overlay').forEach(overlay => {
-  overlay.addEventListener('click', (e) => {
-    if (e.target === overlay) {
-      overlay.classList.remove('open');
-      selectedNum = null;
-    }
-  });
+  overlay.addEventListener('click', (e) => { if (e.target === overlay) { overlay.classList.remove('open'); } });
 });
 
-/* ══════════════════════════════════════════════════════
-   INIT
-═══════════════════════════════════════════════════════ */
-renderGrid();
-updateStats();
-
-// Admin auto-refresh quando painel está aberto
 setInterval(() => {
   if (document.getElementById('view-admin').classList.contains('active')) {
     const el = document.getElementById('admin-last-update');
