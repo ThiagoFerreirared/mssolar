@@ -145,8 +145,46 @@ nav {
 .nav-wpp:hover { transform: translateY(-1px); box-shadow: 0 4px 15px rgba(37,211,102,0.4); }
 
 /* ═══════════════════════════════════════════════════════
-   HERO
+   MOBILE NAV FIXES
 ═══════════════════════════════════════════════════════ */
+@media (max-width: 600px) {
+  nav { padding: 0 1rem; height: 60px; }
+  .nav-logo img { height: 32px; }
+  .nav-logo-text { font-size: 0.95rem; }
+  .nav-countdown { display: none; }
+  .nav-wpp { padding: 0.45rem 0.75rem; font-size: 0.82rem; }
+  .nav-right { gap: 0.5rem; }
+}
+
+/* ═══════════════════════════════════════════════════════
+   HERO COUNTDOWN (só mobile)
+═══════════════════════════════════════════════════════ */
+.hero-countdown {
+  display: none;
+  align-items: center; justify-content: center; gap: 0.5rem;
+  margin-bottom: 1.75rem;
+  animation: fadeDown 0.6s 0.05s ease both;
+}
+.hcd-block {
+  display: flex; flex-direction: column; align-items: center;
+  background: rgba(245,158,11,0.1); border: 1px solid var(--border-gold);
+  border-radius: 10px; padding: 0.5rem 0.9rem; min-width: 54px;
+}
+.hcd-num {
+  font-family: 'Bebas Neue', sans-serif; font-size: 2rem;
+  color: var(--gold); line-height: 1;
+}
+.hcd-lbl {
+  font-size: 0.58rem; font-weight: 700; color: var(--text2);
+  text-transform: uppercase; letter-spacing: 0.5px; margin-top: 2px;
+}
+.hcd-sep {
+  font-family: 'Bebas Neue', sans-serif; font-size: 1.6rem;
+  color: var(--gold-deep); margin-bottom: 8px;
+}
+@media (max-width: 600px) {
+  .hero-countdown { display: flex; }
+}
 #hero {
   position: relative; overflow: hidden;
   padding: 5rem 2rem 4rem; text-align: center;
@@ -905,6 +943,17 @@ td { padding: 0.9rem 1.25rem; font-size: 0.88rem; }
         ☀️ Sorteio MS Energia Solar — Santarém, PA
       </div>
 
+      <!-- Contador regressivo — visível só no mobile -->
+      <div class="hero-countdown" aria-label="Contagem regressiva">
+        <div class="hcd-block"><div class="hcd-num" id="hcd-days">--</div><div class="hcd-lbl">Dias</div></div>
+        <div class="hcd-sep">:</div>
+        <div class="hcd-block"><div class="hcd-num" id="hcd-hours">--</div><div class="hcd-lbl">Horas</div></div>
+        <div class="hcd-sep">:</div>
+        <div class="hcd-block"><div class="hcd-num" id="hcd-mins">--</div><div class="hcd-lbl">Min</div></div>
+        <div class="hcd-sep">:</div>
+        <div class="hcd-block"><div class="hcd-num" id="hcd-secs">--</div><div class="hcd-lbl">Seg</div></div>
+      </div>
+
       <h1 class="hero-title">
         <span class="line-gold">SORTEIO</span>
         <span>MS ENERGIA SOLAR</span>
@@ -1325,16 +1374,19 @@ window.showToast = function(msg, type = 'info', duration = 3500) {
 window.updateCountdown = function() {
   const now = new Date().getTime();
   const diff = DRAW_DATE.getTime() - now;
-  const updateText = (id, text) => { const el = document.getElementById(id); if (el) el.textContent = text; };
+  const set = (id, text) => { const el = document.getElementById(id); if (el) el.textContent = text; };
   if (isNaN(diff) || diff <= 0) {
-    updateText('nav-days', '00'); updateText('nav-hours', '00'); updateText('nav-mins', '00'); updateText('nav-secs', '00');
+    ['nav-days','nav-hours','nav-mins','nav-secs','hcd-days','hcd-hours','hcd-mins','hcd-secs'].forEach(id => set(id, '00'));
     return;
   }
   const days  = Math.floor(diff / 86400000);
   const hours = Math.floor((diff % 86400000) / 3600000);
   const mins  = Math.floor((diff % 3600000) / 60000);
   const secs  = Math.floor((diff % 60000) / 1000);
-  updateText('nav-days', window.pad2(days)); updateText('nav-hours', window.pad2(hours)); updateText('nav-mins', window.pad2(mins)); updateText('nav-secs', window.pad2(secs));
+  set('nav-days',  window.pad2(days));  set('hcd-days',  window.pad2(days));
+  set('nav-hours', window.pad2(hours)); set('hcd-hours', window.pad2(hours));
+  set('nav-mins',  window.pad2(mins));  set('hcd-mins',  window.pad2(mins));
+  set('nav-secs',  window.pad2(secs));  set('hcd-secs',  window.pad2(secs));
 }
 setInterval(window.updateCountdown, 1000);
 window.updateCountdown();
@@ -1581,9 +1633,7 @@ window.contactWpp = function(num) {
   const item = window.rifaData.find(x => x.num === num);
   if (!item || !item.wpp) return;
   const cleanWpp = item.wpp.replace(/\D/g, '');
-  const msg = encodeURIComponent(`Olá ${item.nome}! 👋
-
-Somos da MS Solar. O seu número ${window.pad(num)}...`);
+  const msg = encodeURIComponent(`Olá ${item.nome}! Tudo bem?\n\nSou da *MS Solar* e estou entrando em contato sobre seu número *${window.pad(num)}* — ele ainda está aguardando confirmação do pagamento.\n\nJá conseguiu realizar o PIX? Se precisar dos dados é só me falar!`);
   window.open(`https://wa.me/55${cleanWpp}?text=${msg}`, '_blank');
 }
 
