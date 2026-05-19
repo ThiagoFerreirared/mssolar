@@ -1403,21 +1403,19 @@ function showToast(msg, type = 'info', duration = 3500) {
 /* ══════════════════════════════════════════════════════
    COUNTDOWN
 ═══════════════════════════════════════════════════════ */
-/* ══════════════════════════════════════════════════════
-   COUNTDOWN
-═══════════════════════════════════════════════════════ */
 function updateCountdown() {
   const now = new Date();
   const diff = DRAW_DATE - now;
   
   if (diff <= 0) {
-    // Zera o cronômetro central
-    ['cd-days','cd-hours','cd-mins','cd-secs'].forEach(id => document.getElementById(id).textContent = '00');
     // Zera o cronômetro da barra superior
-    document.getElementById('nav-days').textContent = '00';
-    document.getElementById('nav-hours').textContent = '00';
-    document.getElementById('nav-mins').textContent = '00';
-    document.getElementById('nav-secs').textContent = '00';
+    const navDays = document.getElementById('nav-days');
+    if (navDays) {
+        navDays.textContent = '00';
+        document.getElementById('nav-hours').textContent = '00';
+        document.getElementById('nav-mins').textContent = '00';
+        document.getElementById('nav-secs').textContent = '00';
+    }
     return;
   }
   
@@ -1426,17 +1424,14 @@ function updateCountdown() {
   const mins  = Math.floor((diff % 3600000) / 60000);
   const secs  = Math.floor((diff % 60000) / 1000);
   
-  // Atualiza o cronômetro central
-  document.getElementById('cd-days').textContent  = pad2(days);
-  document.getElementById('cd-hours').textContent = pad2(hours);
-  document.getElementById('cd-mins').textContent  = pad2(mins);
-  document.getElementById('cd-secs').textContent  = pad2(secs);
-  
   // Atualiza a barra de navegação no topo
-  document.getElementById('nav-days').textContent  = pad2(days);
-  document.getElementById('nav-hours').textContent = pad2(hours);
-  document.getElementById('nav-mins').textContent  = pad2(mins);
-  document.getElementById('nav-secs').textContent  = pad2(secs);
+  const navDays = document.getElementById('nav-days');
+  if (navDays) {
+      navDays.textContent  = pad2(days);
+      document.getElementById('nav-hours').textContent = pad2(hours);
+      document.getElementById('nav-mins').textContent  = pad2(mins);
+      document.getElementById('nav-secs').textContent  = pad2(secs);
+  }
 }
 setInterval(updateCountdown, 1000);
 updateCountdown();
